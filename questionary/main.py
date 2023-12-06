@@ -1,5 +1,4 @@
 from typing import Union
-from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from questionary.api import users
 

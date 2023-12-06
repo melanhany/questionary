@@ -27,7 +27,7 @@ services:
   app:
     container_name: questionary_app
     build: .
-    command: poetry run uvicorn questionary.main:app --host 0.0.0.0 --port 80 --reload
+    command: bash -c "poetry run alembic upgrade head && poetry run uvicorn questionary.main:app --host 0.0.0.0 --port 80 --reload"
     volumes:
       - .:/app
     ports:
