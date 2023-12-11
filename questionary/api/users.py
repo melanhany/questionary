@@ -31,3 +31,16 @@ async def add_user(user: UserCreate, session: AsyncSession = Depends(get_session
     await session.commit()
     await session.refresh(user)
     return user
+
+
+@router.delete("/users/{user_id}")
+async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    result = await session.exec(select(User).where(User.id == user_id))
+    user = result.first()
+    print(user)
+    if not user:
+        raise HTTPException(status_code=400, detail="User not found")
+    await session.delete(user)
+    await session.commit()
+
+    return
