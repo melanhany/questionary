@@ -34,3 +34,11 @@ services:
       - 8080:80
     depends_on:
       - db
+
+  frontend:
+    container_name: frontend_app
+    build: ./frontend
+    stdin_open: true
+    ports:
+      - 3000:3000
+    tty: true
