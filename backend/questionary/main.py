@@ -1,13 +1,13 @@
 from typing import Union
 from fastapi import FastAPI
-from questionary.api import users
+from questionary.api import users, genres
 
-from questionary.models import User, UserCreate
-
+from questionary.models import User, UserCreate, Genre, GenreCreate
 
 app = FastAPI()
 
 app.include_router(users.router)
+app.include_router(genres.router)
 
 
 @app.get("/")

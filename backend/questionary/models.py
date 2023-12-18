@@ -15,3 +15,12 @@ class User(UserBase, table=True):
 
 class UserCreate(UserBase):
     pass
+
+class GenreBase(SQLModel):
+    genre_name: str
+    
+class Genre(GenreBase, table=True):
+    id: int = Field(default=None, nullable=False, primary_key=True)
+    
+class GenreCreate(GenreBase):
+    pass
