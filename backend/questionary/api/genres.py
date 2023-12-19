@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
-from questionary.models import Genre, GenreCreate
+from questionary.models import Genre
 from questionary.database import get_session
 from sqlmodel.ext.asyncio.session import AsyncSession
 

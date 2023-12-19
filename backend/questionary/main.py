@@ -2,7 +2,7 @@ from typing import Union
 from fastapi import FastAPI
 from questionary.api import users, genres
 
-from questionary.models import User, UserCreate, Genre, GenreCreate
+from questionary.models import User, UserCreate, Genre
 
 app = FastAPI()
 
