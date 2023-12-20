@@ -1,6 +1,5 @@
 import datetime
-from lib2to3.pgen2.grammar import opmap_raw
-from typing import List, Optional
+from typing import List, Optional, Union
 from sqlalchemy import null
 from sqlmodel import SQLModel, Field, Relationship
 
@@ -33,17 +32,51 @@ class Genre(GenreBase, table=True):
     games: List["Game"] = Relationship(back_populates="genre")
 
 
+class GenreRead(GenreBase):
+    id: int
+    games: List["Game"] = []
+
+
+# class ImageBase(SQLModel):
+#     url: str
+#     name: str
+
+
+# class Image(ImageBase, table=True):
+#     __tablename__ = "images"
+
+#     id: int = Field(default=None, nullable=False, primary_key=True)
+
+
 class GameBase(SQLModel):
     game_name: str
     img_url: Optional[str]
+
+    # image: Union[Image, None] = None
 
 
 class Game(GameBase, table=True):
     __tablename__ = "games"
     id: int = Field(default=None, nullable=False, primary_key=True)
-    genre_id: int = Field(default=None, nullable=False, foreign_key="genres.id")
+    genre_id: Optional[int] = Field(
+        default=None,
+        nullable=True,
+        foreign_key="genres.id",
+    )
+    genre: Genre = Relationship(
+        back_populates="games",
+    )
 
-    genre: Genre = Relationship(back_populates="games")
+
+class GameRead(GameBase):
+    id: int
+    genre_id: Optional[int]
+    genre: Optional[Genre]
+
 
 class GameCreate(GameBase):
     pass
+
+
+# After the definition of `CallRead`, update the forward reference to it:
+GenreRead.update_forward_refs()
