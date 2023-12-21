@@ -1,24 +1,15 @@
 import datetime
-from typing import List, Optional, Union
-from sqlalchemy import null
+from typing import List, Optional
 from sqlmodel import SQLModel, Field, Relationship
 
 
-class UserBase(SQLModel):
-    first_name: str
-    last_name: str
-    birth_date: datetime.date
-    programming_language: str
-
-
-class User(UserBase, table=True):
-    __tablename__ = "users"
-
-    id: int = Field(default=None, nullable=False, primary_key=True)
-
-
-class UserCreate(UserBase):
-    pass
+class MovieGenreLink(SQLModel, table=True):
+    genre_id: Optional[int] = Field(
+        default=None, foreign_key="genres.id", primary_key=True
+    )
+    movie_id: Optional[int] = Field(
+        default=None, foreign_key="movies.id", primary_key=True
+    )
 
 
 class GenreBase(SQLModel):
@@ -29,12 +20,14 @@ class Genre(GenreBase, table=True):
     __tablename__ = "genres"
     id: int = Field(default=None, nullable=False, primary_key=True)
 
-    games: List["Game"] = Relationship(back_populates="genre")
+    movies: List["Movie"] = Relationship(
+        back_populates="genres", link_model=MovieGenreLink
+    )
 
 
 class GenreRead(GenreBase):
     id: int
-    games: List["Game"] = []
+    movies: List["Movie"]
 
 
 # class ImageBase(SQLModel):
@@ -48,35 +41,38 @@ class GenreRead(GenreBase):
 #     id: int = Field(default=None, nullable=False, primary_key=True)
 
 
-class GameBase(SQLModel):
-    game_name: str
-    img_url: Optional[str]
+class MovieBase(SQLModel):
+    title: str
+    budget: int
+    homepage: str
+    overview: str
+    popularity: float
+    release_date: datetime.date
+    revenue: int
+    runtime: int
+    movie_status: str
+    tagline: str
+    vote_average: float
+    vote_count: int
 
-    # image: Union[Image, None] = None
 
-
-class Game(GameBase, table=True):
-    __tablename__ = "games"
+class Movie(MovieBase, table=True):
+    __tablename__ = "movies"
     id: int = Field(default=None, nullable=False, primary_key=True)
-    genre_id: Optional[int] = Field(
-        default=None,
-        nullable=True,
-        foreign_key="genres.id",
-    )
-    genre: Genre = Relationship(
-        back_populates="games",
+
+    genres: List["Genre"] = Relationship(
+        back_populates="movies", link_model=MovieGenreLink
     )
 
 
-class GameRead(GameBase):
+class MovieRead(MovieBase):
     id: int
-    genre_id: Optional[int]
-    genre: Optional[Genre]
+
+    genres: List["Genre"] = []
 
 
-class GameCreate(GameBase):
+class MovieCreate(MovieBase):
     pass
 
 
-# After the definition of `CallRead`, update the forward reference to it:
-GenreRead.update_forward_refs()
+MovieRead.update_forward_refs()

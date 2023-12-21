@@ -8,7 +8,7 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
-from questionary.models import User
+from questionary.models import Movie, Genre, MovieGenreLink
 
 import os, sys
 from dotenv import load_dotenv
