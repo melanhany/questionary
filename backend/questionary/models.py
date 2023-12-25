@@ -3,6 +3,25 @@ from typing import List, Optional
 from sqlmodel import SQLModel, Field, Relationship
 
 
+class UserBase(SQLModel):
+    first_name: str
+    last_name: str
+    email: str
+
+
+class User(UserBase, table=True):
+    __tablename__ = "users"
+    id: int = Field(default=None, nullable=False, primary_key=True)
+
+
+class UserRead(UserBase):
+    id: int
+
+
+class UserCreate(UserBase):
+    pass
+
+
 class MovieGenreLink(SQLModel, table=True):
     genre_id: Optional[int] = Field(
         default=None, foreign_key="genres.id", primary_key=True
